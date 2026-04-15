@@ -1,12 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
+
+// rotas
+import Cadastro from './telas/Login';
+
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function DrawerRoutes() {
+  return (
+    <Drawer.Navigator initialRouteName="Login">
+      <Drawer.Screen name="Login" component={Cadastro} />
+    </Drawer.Navigator>
+  );
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <DrawerRoutes />
+    </NavigationContainer>
   );
 }
 
