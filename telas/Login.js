@@ -9,17 +9,19 @@ const Login = ({ navigation }) => {
   const [password, setSenha] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [Message, setMessage] = useState('');
+  const [error, setError] = useState(false);
 
   const fazerLogin = async () => {
 
     if (!email || !password) {
       setMessage('Preencha todos os campos');
+      setError(true)
       setModalVisible(true);
       return;
     }
 
     try {
-      const response = await fetch('http://192.168.0.10:3000/api/v1/auth/login', {
+      const response = await fetch('http://IP da maquina/api/v1/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,15 +39,20 @@ const Login = ({ navigation }) => {
       console.log(data);
 
       if (response.ok) {
-        // navigation.navigate('Não sei para qual tela irá');
+        navigation.navigate('AceitarTermo');
         console.log('deu certo')
+        setMessage(data.message || 'Sucesso ao realizar o login');
+        setError(false)
+        setModalVisible(true);
       } else {
         setMessage(data.message || 'Erro ao fazer login');
+        setError(true)
         setModalVisible(true);
       }
 
     } catch (error) {
       setMessage('Erro de conexão com o servidor');
+      setError(true)
       setModalVisible(true);
     }
   };
@@ -54,42 +61,46 @@ const Login = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar style="dark" />
 
-      <Image
-        source={{ uri: 'https://via.placeholder.com/100' }} 
-        style={styles.logo}
-      />
+      <View style={styles.containerLogin}>
 
-      <Text style={styles.title}>Bem-vindo ao UNIFAE Care</Text>
-      <Text style={styles.subtitle}>
-        Entre com suas credenciais para continuar.
-      </Text>
+        {/* Essa imagem é apenas representativa já que não tenho a imagem original */}
+        <Image
+          source={require('../assets/UnifaeCare.jpg')}
+          style={styles.logo}
+        />
 
-      <Text style={styles.label}>E-mail</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="nome@exemplo.com.br"
-        onChangeText={setEmail}
-      />
+        <Text style={styles.title}>Bem-vindo ao UNIFAE Care</Text>
+        <Text style={styles.subtitle}>
+          Entre com suas credenciais para continuar.
+        </Text>
 
-      <Text style={styles.label}>Senha</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="••••••••"
-        secureTextEntry
-        onChangeText={setSenha}
-      />
+        <Text style={styles.label}>E-mail</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="nome@exemplo.com.br"
+          onChangeText={setEmail}
+        />
 
-      <TouchableOpacity onPress={() => navigation.navigate('Recuperar Senha')}>
-        <Text style={styles.link}>RECUPERAR SENHA</Text>
-      </TouchableOpacity>
+        <Text style={styles.label}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="••••••••"
+          secureTextEntry
+          onChangeText={setSenha}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={fazerLogin}>
-        <Text style={styles.buttonText}>Entrar →</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Recuperar Senha')}>
+          <Text style={styles.link}>RECUPERAR SENHA</Text>
+        </TouchableOpacity>
 
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Não possui uma conta?</Text>
-        <Text style={styles.footerLink}>Cadastre-se agora</Text>
+        <TouchableOpacity style={styles.button} onPress={fazerLogin}>
+          <Text style={styles.buttonText}>Entrar →</Text>
+        </TouchableOpacity>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Não possui uma conta?</Text>
+          <Text style={styles.footerLink}>Cadastre-se agora</Text>
+        </View>
       </View>
 
       <Text style={styles.copy}>
@@ -107,26 +118,30 @@ const Login = ({ navigation }) => {
         animationType="fade"
         visible={modalVisible}
       >
-        
         <View style={styles.ModalContainer}>
     
           <View style={styles.errorBox}>
-        
-            <Text style={styles.errorTitle}>Erro</Text>
+            <Text style={[
+              styles.errorTitle,
+              { color: error ? '#a94442' : 'green' }
+            ]}>
+              {error ? 'Erro' : 'Sucesso'}
+            </Text>
 
             <Text style={styles.errorText}>
               {Message}
             </Text>
 
             <TouchableOpacity
-              style={styles.errorButton}
+              style={[
+                styles.errorButton,
+                { backgroundColor: error ? '#a94442' : 'green' }
+              ]}
               onPress={() => setModalVisible(false)}
             >
               <Text style={styles.errorButtonText}>Fechar</Text>
             </TouchableOpacity>
-
           </View>
-
         </View>
       </Modal>
     </View>
@@ -138,27 +153,33 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between',
     backgroundColor: '#f2f2f2',
     padding: 20,
-    justifyContent: 'center',
+  },
+
+  containerLogin: {
+    flex: 1,
+    justifyContent: 'center'
   },
 
   logo: {
     width: 100,
     height: 100,
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 10
   },
 
   subtitle: {
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 50,
     color: '#555',
   },
 
@@ -171,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 15,
-    marginBottom: 15,
+    marginBottom: 25,
   },
 
   link: {
@@ -196,7 +217,7 @@ const styles = StyleSheet.create({
 
   footer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginTop: 60,
   },
 
   footerText: {
@@ -206,13 +227,14 @@ const styles = StyleSheet.create({
   footerLink: {
     color: 'green',
     fontWeight: 'bold',
+    marginTop: 10,
   },
 
   copy: {
     textAlign: 'center',
     fontSize: 12,
     color: '#777',
-    marginTop: 20,
+    marginTop: 10,
   },
 
   bottomLinks: {
@@ -221,6 +243,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
+  // Modal
   ModalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',

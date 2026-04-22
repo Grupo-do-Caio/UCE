@@ -1,7 +1,58 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { Modal } from 'react-native';
 
 const Recuperar_senha = ({ navigation }) => {
+
+  const [email, setEmail] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [Message, setMessage] = useState('');
+  const [error, setError] = useState(false);
+
+  const RecuperarSenha = async () => {
+
+    if (!email) {
+      setMessage('Preencha todos os campos');
+      setError(true)
+      setModalVisible(true);
+      return;
+    }
+
+    try {
+      const response = await fetch('http://IP da maquina/api/v1/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+        })
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (response.ok) {
+        console.log('deu certo')
+        setMessage(data.message || 'Enviamos um código de 8 caracteres para o e-mail informado. Use-o junto com a nova senha para concluir.');
+        setError(false)
+        setModalVisible(true);
+        navigation.navigate('Recuperar Acesso');
+      } else {
+        setMessage(data.message || 'Erro ao enviar o código');
+        setError(true)
+        setModalVisible(true);
+      }
+
+    } catch (error) {
+      setMessage('Erro de conexão com o servidor');
+      setError(true)
+      setModalVisible(true);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -9,39 +60,44 @@ const Recuperar_senha = ({ navigation }) => {
       {/* <View style={styles.header}>
         <Text style={styles.back}>←</Text>
         <Text style={styles.headerTitle}>UNIFAE Care</Text>
-      </View>
+      </View> */}
 
-      <Image
-        source={{ uri: 'https://via.placeholder.com/100' }}
-        style={styles.logo}
-      /> */}
+      <View style={styles.containerRecuperar}>
 
-      <Text style={styles.title}>Recuperar Senha</Text>
-      <Text style={styles.subtitle}>
-        Insira seu e-mail para receber um código de 8 dígitos para redefinir sua conta.
-      </Text>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>ENDEREÇO DE E-MAIL</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="seu@email.com"
+        {/* Essa imagem é apenas representativa já que não tenho a imagem original */}
+        <Image
+          source={require('../assets/UnifaeCare.jpg')}
+          style={styles.logo}
         />
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Enviar Código de Recuperação</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Text style={styles.link}>← Voltar ao Login</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.infoBox}>
-        <Text style={styles.infoTitle}>Informação Importante</Text>
-        <Text style={styles.infoText}>
-          Por motivos de segurança, o código de recuperação expira em 15 minutos. Verifique sua caixa de spam caso não receba o e-mail em instantes.
+        <Text style={styles.title}>Recuperar Senha</Text>
+        <Text style={styles.subtitle}>
+          Insira seu e-mail para receber um código de 8 dígitos para redefinir sua conta.
         </Text>
+
+        <View style={styles.card}>
+          <Text style={styles.label}>ENDEREÇO DE E-MAIL</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="seu@email.com"
+            onChangeText={setEmail}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={RecuperarSenha}>
+            <Text style={styles.buttonText}>Enviar Código de Recuperação</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Entrar')}>
+            <Text style={styles.link}>← Voltar ao Login</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>Informação Importante</Text>
+          <Text style={styles.infoText}>
+            Por motivos de segurança, o código de recuperação expira em 15 minutos. Verifique sua caixa de spam caso não receba o e-mail em instantes.
+          </Text>
+        </View>
       </View>
 
       <View>
@@ -55,6 +111,38 @@ const Recuperar_senha = ({ navigation }) => {
             © 2024 UNIFAE CARE. CLINICAL EDITORIAL SYSTEM.
         </Text>
       </View>
+
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={modalVisible}
+      >
+        
+        <View style={styles.ModalContainer}>
+          <View style={styles.errorBox}>
+            <Text style={[
+              styles.errorTitle,
+              { color: error ? '#a94442' : 'green' }
+            ]}>
+              {error ? 'Erro' : 'Sucesso'}
+            </Text>
+
+            <Text style={styles.errorText}>
+              {Message}
+            </Text>
+
+            <TouchableOpacity
+              style={[
+                styles.errorButton,
+                { backgroundColor: error ? '#a94442' : 'green' }
+              ]}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.errorButtonText}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -76,6 +164,11 @@ const styles = StyleSheet.create({
     height: 100
   },
 
+  containerRecuperar: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+
   back: {
     fontSize: 20,
     color: 'green',
@@ -92,11 +185,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
 
   title: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
@@ -113,6 +206,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 15,
     marginBottom: 20,
+    marginTop: 20,
   },
 
   label: {
@@ -153,6 +247,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderLeftWidth: 5,
     borderLeftColor: 'green',
+    marginTop: 20,
     marginBottom: 20,
   },
 
@@ -177,5 +272,52 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 10,
+  },
+
+  // Modal
+  ModalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  errorBox: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 15,
+    width: '80%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5, 
+  },
+
+  errorTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#a94442',
+    marginBottom: 10,
+  },
+
+  errorText: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+
+  errorButton: {
+    backgroundColor: '#a94442',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+
+  errorButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
