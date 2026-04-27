@@ -10,7 +10,7 @@ const AceitarTermos = ({ navigation }) => {
 
   const continuar = async () => {
     try {
-        const response = await fetch('http://IP da maquina/api/v1/auth/consent/accept', {
+        const response = await fetch('http://192.168.0.174:3000/api/v1/auth/consent/accept', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

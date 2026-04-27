@@ -31,7 +31,7 @@ const Recuperar_acesso = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://IP da maquina/api/v1/auth/reset-password', {
+      const response = await fetch('http://192.168.0.174:3000/api/v1/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -21,7 +21,7 @@ const Login = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://IP da maquina/api/v1/auth/login', {
+      const response = await fetch('http://192.168.0.174:3000/api/v1/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
