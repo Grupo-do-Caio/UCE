@@ -1,23 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-<<<<<<< HEAD
-
-const Login = ({ navigation }) => {
-=======
 import React, { useState } from 'react';
 import { Modal } from 'react-native';
 
-const Login = ({ navigation }) => {
+const Recuperar_senha = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
-  const [password, setSenha] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [Message, setMessage] = useState('');
   const [error, setError] = useState(false);
 
-  const fazerLogin = async () => {
+  const RecuperarSenha = async () => {
 
-    if (!email || !password) {
+    if (!email) {
       setMessage('Preencha todos os campos');
       setError(true)
       setModalVisible(true);
@@ -25,16 +20,13 @@ const Login = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.0.174:3000/api/v1/auth/login', {
+      const response = await fetch('http://192.168.0.174:3000/api/v1/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           email: email,
-          password: password,
-          accessMode: 'APP',
-          appId: 1
         })
       });
 
@@ -43,13 +35,13 @@ const Login = ({ navigation }) => {
       console.log(data);
 
       if (response.ok) {
-        navigation.navigate('AceitarTermo');
         console.log('deu certo')
-        setMessage(data.message || 'Sucesso ao realizar o login');
+        setMessage(data.message || 'Enviamos um código de 8 caracteres para o e-mail informado. Use-o junto com a nova senha para concluir.');
         setError(false)
         setModalVisible(true);
+        navigation.navigate('Recuperar Acesso');
       } else {
-        setMessage(data.message || 'Erro ao fazer login');
+        setMessage(data.message || 'Erro ao enviar o código');
         setError(true)
         setModalVisible(true);
       }
@@ -61,58 +53,16 @@ const Login = ({ navigation }) => {
     }
   };
 
->>>>>>> origin/main
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
-<<<<<<< HEAD
-      {/* Logo */}
-      <Image
-        source={{ uri: 'https://via.placeholder.com/100' }} // troca pela sua imagem depois
-        style={styles.logo}
-      />
+      {/* <View style={styles.header}>
+        <Text style={styles.back}>←</Text>
+        <Text style={styles.headerTitle}>UNIFAE Care</Text>
+      </View> */}
 
-      {/* Título */}
-      <Text style={styles.title}>Bem-vindo ao UNIFAE Care</Text>
-      <Text style={styles.subtitle}>
-        Entre com suas credenciais para continuar.
-      </Text>
-
-      {/* Email */}
-      <Text style={styles.label}>E-mail</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="nome@exemplo.com.br"
-      />
-
-      {/* Senha */}
-      <Text style={styles.label}>Senha</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="••••••••"
-        secureTextEntry
-      />
-
-      {/* Recuperar senha */}
-      <TouchableOpacity>
-        <Text style={styles.link}>RECUPERAR SENHA</Text>
-      </TouchableOpacity>
-
-      {/* Botão */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Entrar →</Text>
-      </TouchableOpacity>
-
-      {/* Cadastro */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Não possui uma conta?</Text>
-        <Text style={styles.footerLink}>Cadastre-se agora</Text>
-      </View>
-
-      {/* Rodapé */}
-=======
-      <View style={styles.containerLogin}>
+      <View style={styles.containerRecuperar}>
 
         {/* Essa imagem é apenas representativa já que não tenho a imagem original */}
         <Image
@@ -120,60 +70,55 @@ const Login = ({ navigation }) => {
           style={styles.logo}
         />
 
-        <Text style={styles.title}>Bem-vindo ao UNIFAE Care</Text>
+        <Text style={styles.title}>Recuperar Senha</Text>
         <Text style={styles.subtitle}>
-          Entre com suas credenciais para continuar.
+          Insira seu e-mail para receber um código de 8 dígitos para redefinir sua conta.
         </Text>
 
-        <Text style={styles.label}>E-mail</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="nome@exemplo.com.br"
-          onChangeText={setEmail}
-        />
+        <View style={styles.card}>
+          <Text style={styles.label}>ENDEREÇO DE E-MAIL</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="seu@email.com"
+            onChangeText={setEmail}
+          />
 
-        <Text style={styles.label}>Senha</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="••••••••"
-          secureTextEntry
-          onChangeText={setSenha}
-        />
+          <TouchableOpacity style={styles.button} onPress={RecuperarSenha}>
+            <Text style={styles.buttonText}>Enviar Código de Recuperação</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Recuperar Senha')}>
-          <Text style={styles.link}>RECUPERAR SENHA</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Entrar')}>
+            <Text style={styles.link}>← Voltar ao Login</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity style={styles.button} onPress={fazerLogin}>
-          <Text style={styles.buttonText}>Entrar →</Text>
-        </TouchableOpacity>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Não possui uma conta?</Text>
-          <Text style={styles.footerLink}>Cadastre-se agora</Text>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>Informação Importante</Text>
+          <Text style={styles.infoText}>
+            Por motivos de segurança, o código de recuperação expira em 15 minutos. Verifique sua caixa de spam caso não receba o e-mail em instantes.
+          </Text>
         </View>
       </View>
 
->>>>>>> origin/main
-      <Text style={styles.copy}>
-        © 2024 UNIFAE CARE. CLINICAL EDITORIAL SYSTEM.
-      </Text>
+      <View>
+        <View style={styles.bottomLinks}>
+            <Text>PRIVACIDADE</Text>
+            <Text>TERMOS</Text>
+            <Text>ACESSIBILIDADE</Text>
+        </View>
 
-      <View style={styles.bottomLinks}>
-        <Text>PRIVACIDADE</Text>
-        <Text>TERMOS</Text>
-        <Text>ACESSIBILIDADE</Text>
+        <Text style={styles.copy}>
+            © 2024 UNIFAE CARE. CLINICAL EDITORIAL SYSTEM.
+        </Text>
       </View>
-<<<<<<< HEAD
-=======
 
       <Modal
         transparent={true}
         animationType="fade"
         visible={modalVisible}
       >
+        
         <View style={styles.ModalContainer}>
-    
           <View style={styles.errorBox}>
             <Text style={[
               styles.errorTitle,
@@ -198,98 +143,91 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </Modal>
->>>>>>> origin/main
     </View>
   );
 };
 
-export default Login;
+export default Recuperar_senha;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-<<<<<<< HEAD
-    backgroundColor: '#f2f2f2',
-    padding: 20,
-    justifyContent: 'center',
-=======
     justifyContent: 'space-between',
     backgroundColor: '#f2f2f2',
     padding: 20,
   },
 
-  containerLogin: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    height: 100
+  },
+
+  containerRecuperar: {
     flex: 1,
     justifyContent: 'center'
->>>>>>> origin/main
+  },
+
+  back: {
+    fontSize: 20,
+    color: 'green',
+    marginRight: 10,
+  },
+
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'green',
   },
 
   logo: {
     width: 100,
     height: 100,
     alignSelf: 'center',
-<<<<<<< HEAD
-    marginBottom: 20,
-  },
-
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-=======
     marginBottom: 30,
   },
 
   title: {
-    fontSize: 16,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10
->>>>>>> origin/main
+    marginBottom: 10,
   },
 
   subtitle: {
     textAlign: 'center',
-<<<<<<< HEAD
-    marginBottom: 30,
-=======
-    marginBottom: 50,
->>>>>>> origin/main
+    marginBottom: 20,
     color: '#555',
+  },
+
+  card: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 15,
+    marginBottom: 20,
+    marginTop: 20,
   },
 
   label: {
     marginBottom: 5,
     color: '#333',
+    fontSize: 12,
   },
 
   input: {
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 15,
-<<<<<<< HEAD
     marginBottom: 15,
-=======
-    marginBottom: 25,
->>>>>>> origin/main
-  },
-
-  link: {
-    color: 'green',
-    textAlign: 'right',
-    marginBottom: 20,
   },
 
   button: {
-<<<<<<< HEAD
-    backgroundColor: '#1dbe8eff',
-=======
     backgroundColor: 'green',
->>>>>>> origin/main
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 15,
   },
 
   buttonText: {
@@ -298,37 +236,36 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  footer: {
-    alignItems: 'center',
-<<<<<<< HEAD
-    marginBottom: 20,
-=======
-    marginTop: 60,
->>>>>>> origin/main
-  },
-
-  footerText: {
-    color: '#555',
-  },
-
-  footerLink: {
+  link: {
     color: 'green',
+    textAlign: 'center',
+  },
+
+  infoBox: {
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 10,
+    borderLeftWidth: 5,
+    borderLeftColor: 'green',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
+  infoTitle: {
     fontWeight: 'bold',
-<<<<<<< HEAD
-=======
-    marginTop: 10,
->>>>>>> origin/main
+    marginBottom: 5,
+  },
+
+  infoText: {
+    color: '#555',
+    fontSize: 13,
   },
 
   copy: {
     textAlign: 'center',
     fontSize: 12,
     color: '#777',
-<<<<<<< HEAD
-    marginTop: 20,
-=======
     marginTop: 10,
->>>>>>> origin/main
   },
 
   bottomLinks: {
@@ -336,8 +273,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginTop: 10,
   },
-<<<<<<< HEAD
-=======
 
   // Modal
   ModalContainer: {
@@ -385,5 +320,4 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
->>>>>>> origin/main
 });
