@@ -13,7 +13,7 @@ const Home = ({ navigation }) => {
 
   const buscarApps = async () => {
     try {
-      const response = await fetch('http://192.168.0.174:3000/api/v1/auth/apps');
+      const response = await fetch('http://localhost:3000/api/v1/auth/apps');
       const data = await response.json();
 
       setApps(data);

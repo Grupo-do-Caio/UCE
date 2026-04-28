@@ -27,6 +27,7 @@ import Recuperar_senha from './telas/recuperar_senha';
 import Recuperar_acesso from './telas/recuperacao_acesso';
 import Home from './telas/Home';
 import AceitarTermo from './telas/aceitarTermo';
+import Perfil from './telas/perfil';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,6 +44,12 @@ function AuthStack() {
       <Stack.Screen 
         name="Entrar" 
         component={Login} 
+        options={{ headerShown: false }} 
+      />
+
+      <Stack.Screen 
+        name="Perfil" 
+        component={Perfil} 
         options={{ headerShown: false }} 
       />
 

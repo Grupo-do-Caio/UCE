@@ -10,7 +10,7 @@ const AceitarTermos = ({ navigation }) => {
 
   const continuar = async () => {
     try {
-        const response = await fetch('http://192.168.0.174:3000/api/v1/auth/consent/accept', {
+        const response = await fetch('http://localhost:3000/api/v1/auth/consent/accept', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ const AceitarTermos = ({ navigation }) => {
       console.log(data);
 
       if (response.ok) {
-        // navigation.navigate('Não sei para qual tela ele vai');
+        navigation.navigate('Perfil');
         console.log('deu certo')
         setMessage(data.message || 'Termo aceito com sucesso');
         setError(false)
