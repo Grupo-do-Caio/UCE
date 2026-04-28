@@ -1,9 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-<<<<<<< HEAD
-
-const Login = ({ navigation }) => {
-=======
 import React, { useState } from 'react';
 import { Modal } from 'react-native';
 
@@ -61,57 +57,10 @@ const Login = ({ navigation }) => {
     }
   };
 
->>>>>>> origin/main
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
-<<<<<<< HEAD
-      {/* Logo */}
-      <Image
-        source={{ uri: 'https://via.placeholder.com/100' }} // troca pela sua imagem depois
-        style={styles.logo}
-      />
-
-      {/* Título */}
-      <Text style={styles.title}>Bem-vindo ao UNIFAE Care</Text>
-      <Text style={styles.subtitle}>
-        Entre com suas credenciais para continuar.
-      </Text>
-
-      {/* Email */}
-      <Text style={styles.label}>E-mail</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="nome@exemplo.com.br"
-      />
-
-      {/* Senha */}
-      <Text style={styles.label}>Senha</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="••••••••"
-        secureTextEntry
-      />
-
-      {/* Recuperar senha */}
-      <TouchableOpacity>
-        <Text style={styles.link}>RECUPERAR SENHA</Text>
-      </TouchableOpacity>
-
-      {/* Botão */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Entrar →</Text>
-      </TouchableOpacity>
-
-      {/* Cadastro */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Não possui uma conta?</Text>
-        <Text style={styles.footerLink}>Cadastre-se agora</Text>
-      </View>
-
-      {/* Rodapé */}
-=======
       <View style={styles.containerLogin}>
 
         {/* Essa imagem é apenas representativa já que não tenho a imagem original */}
@@ -154,7 +103,6 @@ const Login = ({ navigation }) => {
         </View>
       </View>
 
->>>>>>> origin/main
       <Text style={styles.copy}>
         © 2024 UNIFAE CARE. CLINICAL EDITORIAL SYSTEM.
       </Text>
@@ -164,8 +112,6 @@ const Login = ({ navigation }) => {
         <Text>TERMOS</Text>
         <Text>ACESSIBILIDADE</Text>
       </View>
-<<<<<<< HEAD
-=======
 
       <Modal
         transparent={true}
@@ -198,7 +144,6 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </Modal>
->>>>>>> origin/main
     </View>
   );
 };
@@ -208,11 +153,6 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-<<<<<<< HEAD
-    backgroundColor: '#f2f2f2',
-    padding: 20,
-    justifyContent: 'center',
-=======
     justifyContent: 'space-between',
     backgroundColor: '#f2f2f2',
     padding: 20,
@@ -221,22 +161,12 @@ const styles = StyleSheet.create({
   containerLogin: {
     flex: 1,
     justifyContent: 'center'
->>>>>>> origin/main
   },
 
   logo: {
     width: 100,
     height: 100,
     alignSelf: 'center',
-<<<<<<< HEAD
-    marginBottom: 20,
-  },
-
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-=======
     marginBottom: 30,
   },
 
@@ -245,16 +175,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10
->>>>>>> origin/main
   },
 
   subtitle: {
     textAlign: 'center',
-<<<<<<< HEAD
-    marginBottom: 30,
-=======
     marginBottom: 50,
->>>>>>> origin/main
     color: '#555',
   },
 
@@ -267,11 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 15,
-<<<<<<< HEAD
-    marginBottom: 15,
-=======
     marginBottom: 25,
->>>>>>> origin/main
   },
 
   link: {
@@ -281,11 +202,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-<<<<<<< HEAD
-    backgroundColor: '#1dbe8eff',
-=======
     backgroundColor: 'green',
->>>>>>> origin/main
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -300,11 +217,7 @@ const styles = StyleSheet.create({
 
   footer: {
     alignItems: 'center',
-<<<<<<< HEAD
-    marginBottom: 20,
-=======
     marginTop: 60,
->>>>>>> origin/main
   },
 
   footerText: {
@@ -314,21 +227,14 @@ const styles = StyleSheet.create({
   footerLink: {
     color: 'green',
     fontWeight: 'bold',
-<<<<<<< HEAD
-=======
     marginTop: 10,
->>>>>>> origin/main
   },
 
   copy: {
     textAlign: 'center',
     fontSize: 12,
     color: '#777',
-<<<<<<< HEAD
-    marginTop: 20,
-=======
     marginTop: 10,
->>>>>>> origin/main
   },
 
   bottomLinks: {
@@ -336,8 +242,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginTop: 10,
   },
-<<<<<<< HEAD
-=======
 
   // Modal
   ModalContainer: {
@@ -385,5 +289,4 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
->>>>>>> origin/main
 });
